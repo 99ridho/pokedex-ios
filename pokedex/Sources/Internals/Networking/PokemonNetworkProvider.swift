@@ -23,6 +23,7 @@ struct PokemonNetworkProvider {
         return provider.rx
             .request(.requestPokemonList(offset: offset))
             .asObservable()
+            .filterSuccessfulStatusAndRedirectCodes()
             .mapJSON()
             .map { json -> [PokemonListResult] in
                 let dict = json as! [String:Any]
@@ -36,6 +37,7 @@ struct PokemonNetworkProvider {
         return provider.rx
             .request(.requestPokemonDetail(name: name))
             .asObservable()
+            .filterSuccessfulStatusAndRedirectCodes()
             .mapJSON()
             .map { json -> Pokemon in
                 let dict = json as! [String:Any]

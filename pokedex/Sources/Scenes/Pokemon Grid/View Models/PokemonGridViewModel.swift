@@ -27,8 +27,8 @@ struct PokemonGridViewModel: ViewModel {
     }
     
     func transform(fromInput input: PokemonGridViewModel.Input) -> PokemonGridViewModel.Output {
-        let page = Variable<Int>(0)
-        let items = Variable<[PokemonListResult]>([])
+        let page = BehaviorRelay<Int>(value: 0)
+        let items = BehaviorRelay<[PokemonListResult]>(value: [])
         
         input.endOfCollectionViewTrigger
             .withLatestFrom(page.asDriver())
@@ -38,8 +38,8 @@ struct PokemonGridViewModel: ViewModel {
                     .asDriver(onErrorJustReturn: [])
             }
             .drive(onNext: {
-                items.value += $0
-                page.value += 1
+                items.accept(items.value + $0)
+                page.accept(page.value + 1)
             })
             .disposed(by: disposeBag)
         

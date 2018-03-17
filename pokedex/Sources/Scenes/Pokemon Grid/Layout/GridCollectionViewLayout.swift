@@ -12,21 +12,12 @@ class GridCollectionViewLayout: UICollectionViewFlowLayout {
     override var itemSize: CGSize {
         get {
             let width = UIScreen.main.bounds.size.width
-            return CGSize(width: (width / 2.0) - 0.5, height: 100.0)
+            let height = collectionView?.bounds.height ?? 0
+            return CGSize(width: (width / 2.0) - 15, height: height / 5)
         }
         set {
             self.itemSize = newValue
         }
-    }
-    
-    override var minimumLineSpacing: CGFloat {
-        get { return 1.0 }
-        set { self.minimumLineSpacing = newValue }
-    }
-    
-    override var minimumInteritemSpacing: CGFloat {
-        get { return 1.0 }
-        set { self.minimumLineSpacing = newValue }
     }
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {

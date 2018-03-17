@@ -34,8 +34,6 @@ class PokemonGridCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit() {
-        //isSkeletonable = true
-        //nameLabel.isSkeletonable = true
         spriteImageView.isSkeletonable = true
         
         backgroundColor = UIColor.white
@@ -52,11 +50,15 @@ class PokemonGridCollectionViewCell: UICollectionViewCell {
         nameLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-5)
+            make.bottom.equalToSuperview().offset(-10)
             make.height.equalTo(20)
         }
         
         spriteImageView.showSkeleton()
+        
+        layer.borderWidth = 1.0
+        layer.borderColor = UIColor.black.withAlphaComponent(0.7).cgColor
+        layer.cornerRadius = 3.0
     }
     
     override init(frame: CGRect) {

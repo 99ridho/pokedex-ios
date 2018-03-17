@@ -15,7 +15,8 @@ class PokemonGridViewController: UIViewController {
     lazy var collectionView: UICollectionView = { [unowned self] in
         let cv = UICollectionView(frame: .zero, collectionViewLayout: GridCollectionViewLayout())
         cv.register(PokemonGridCollectionViewCell.self, forCellWithReuseIdentifier: PokemonGridCollectionViewCell.cellIdentifier)
-        cv.backgroundColor = UIColor.lightGray
+        cv.backgroundColor = UIColor.white
+        cv.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
         
         return cv
     }()
