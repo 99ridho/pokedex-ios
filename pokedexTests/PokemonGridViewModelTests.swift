@@ -53,6 +53,7 @@ class PokemonGridViewModelTests: XCTestCase {
         }
         testScheduler.start()
         
-        XCTAssertEqual(observer.events.count * 20, 100)
+        let totalPokemons = observer.events.last?.value.element?.count ?? 0
+        XCTAssertEqual(totalPokemons, 100)
     }
 }
