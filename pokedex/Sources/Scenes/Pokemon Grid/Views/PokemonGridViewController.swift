@@ -12,7 +12,7 @@ import RxCocoa
 import RxSwift
 
 class PokemonGridViewController: UIViewController {
-    lazy var collectionView: UICollectionView = { [unowned self] in
+    let collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: GridCollectionViewLayout())
         cv.register(PokemonGridCollectionViewCell.self, forCellWithReuseIdentifier: PokemonGridCollectionViewCell.cellIdentifier)
         cv.backgroundColor = UIColor.white
