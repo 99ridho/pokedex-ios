@@ -35,6 +35,7 @@ class PokemonGridViewModelTests: XCTestCase {
     func testRequestPokemonDetailsWhenReachBottomGrid() {
         let testScheduler = TestScheduler(initialClock: 0)
         let mockReachBottomGridTriggerEvents: [Recorded<Event<Void>>] = [
+            Recorded.next(0, ()),
             Recorded.next(100, ()),
             Recorded.next(150, ()),
             Recorded.next(200, ()),
@@ -50,10 +51,8 @@ class PokemonGridViewModelTests: XCTestCase {
         testScheduler.scheduleAt(0) { [unowned self] in
             vmOutput.pokemonCellsViewModel.drive(observer).disposed(by: self.disposeBag)
         }
-        
         testScheduler.start()
         
-        print(observer.events)
         XCTAssertEqual(observer.events.count * 20, 100)
     }
 }
