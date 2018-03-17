@@ -1,0 +1,45 @@
+PODS:
+  - Alamofire (4.6.0)
+  - Moya/Core (11.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 3.0)
+  - Moya/RxSwift (11.0.1):
+    - Moya/Core
+    - RxSwift (~> 4.0)
+  - Result (3.2.4)
+  - RxBlocking (4.1.2):
+    - RxSwift (~> 4.0)
+  - RxCocoa (4.1.2):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.1.2)
+  - RxTest (4.1.2):
+    - RxSwift (~> 4.0)
+  - SkeletonView (1.1.1)
+  - SnapKit (4.0.0)
+  - Unbox (2.5.0)
+
+DEPENDENCIES:
+  - Moya/RxSwift (~> 11.0)
+  - RxBlocking (~> 4.0)
+  - RxCocoa (~> 4.0)
+  - RxSwift (~> 4.0)
+  - RxTest (~> 4.0)
+  - SkeletonView
+  - SnapKit
+  - Unbox
+
+SPEC CHECKSUMS:
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  Moya: 3d594ada51a21cc02b18739ab578a1984f900c8a
+  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  RxBlocking: f6054985901412fc8c02daa84e92d4ba68c61389
+  RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
+  RxSwift: e49536837d9901277638493ea537394d4b55f570
+  RxTest: e634f15fd2c2cd0e0120132ef7a4f7be69ad0393
+  SkeletonView: 041053e904504e7d8db83df166e599be75659fe1
+  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  Unbox: 30e437e6151a6de16139375fd4e8dd9a664cfbf7
+
+PODFILE CHECKSUM: 306288fd84d326a654e2770de3078b837cc689ff
+
+COCOAPODS: 1.3.1
