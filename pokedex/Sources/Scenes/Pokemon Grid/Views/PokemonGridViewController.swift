@@ -42,7 +42,8 @@ class PokemonGridViewController: UIViewController {
     }
     
     func bindViewModelToCollectionView() {
-        let vmInput = PokemonGridViewModel.Input(endOfCollectionViewTrigger: collectionView.rx_reachedBottom.asDriverOnErrorJustComplete())
+        let vmInput = PokemonGridViewModel.Input(endOfCollectionViewTrigger: collectionView.rx_reachedBottom.asDriverOnErrorJustComplete(),
+                                                 itemDidSelect: collectionView.rx.itemSelected.asDriver())
         let output = vm.transform(fromInput: vmInput)
         
         output.pokemonCellsViewModel
@@ -54,6 +55,12 @@ class PokemonGridViewController: UIViewController {
 
                 return cell
             }
+            .disposed(by: disposeBag)
+        
+        output.selectedPokemon
+            .drive(onNext: { pokemon in
+                print("selected pokemon: ", pokemon)
+            })
             .disposed(by: disposeBag)
     }
 

@@ -12,11 +12,13 @@ import RxSwift
 
 struct PokemonGridViewModel: ViewModel {
     struct Input {
-        var endOfCollectionViewTrigger: Driver<Void>
+        let endOfCollectionViewTrigger: Driver<Void>
+        let itemDidSelect: Driver<IndexPath>
     }
     
     struct Output {
-        var pokemonCellsViewModel: Driver<[PokemonGridCellViewModel]>
+        let pokemonCellsViewModel: Driver<[PokemonGridCellViewModel]>
+        let selectedPokemon: Driver<Pokemon>
     }
     
     var networkProvider: PokemonNetworkProvider
@@ -29,26 +31,45 @@ struct PokemonGridViewModel: ViewModel {
     func transform(fromInput input: PokemonGridViewModel.Input) -> PokemonGridViewModel.Output {
         let page = BehaviorRelay<Int>(value: 0)
         let items = BehaviorRelay<[PokemonListResult]>(value: [])
+        let nextPageAvailable = BehaviorRelay<Bool>(value: true)
         
-        input.endOfCollectionViewTrigger
-            .withLatestFrom(page.asDriver())
-            .flatMapLatest { page -> Driver<[PokemonListResult]> in
-                return self.networkProvider
-                    .requestPokemonList(withOffset: page * 20)
-                    .asDriver(onErrorJustReturn: [])
+        let nextPageTrigger = input.endOfCollectionViewTrigger.withLatestFrom(nextPageAvailable.asDriver())
+            .flatMapLatest { (available) -> Driver<Void> in
+                return available ? Driver.just(()) : Driver.empty()
             }
-            .drive(onNext: {
-                items.accept(items.value + $0)
-                page.accept(page.value + 1)
-            })
-            .disposed(by: disposeBag)
         
-        let pokemonDetailCellViewModels = items.asDriver().map {
+        let results = nextPageTrigger
+            .withLatestFrom(page.asDriver())
+            .flatMapLatest { p -> Driver<[PokemonListResult]> in
+                return self.networkProvider
+                    .requestPokemonList(withOffset: p * 20)
+                    .asDriverOnErrorJustComplete()
+            }
+            .map { result -> [PokemonListResult] in
+                items.accept(items.value + result)
+                page.accept(page.value + 1)
+                nextPageAvailable.accept(!result.isEmpty)
+                
+                return items.value
+            }
+        
+        let pokemonDetailCellViewModels = results.map {
             $0.enumerated().map {
                 PokemonGridCellViewModel(withPokemonName: $1.name, index: $0 + 1)
             }
         }
         
-        return Output(pokemonCellsViewModel: pokemonDetailCellViewModels)
+        let selectedPokemon = input.itemDidSelect
+            .withLatestFrom(results) { (indexPath, results) -> String in
+                return results[indexPath.row].name
+            }
+            .flatMapLatest {
+                return self.networkProvider
+                    .requestPokemonDetail(withName: $0)
+                    .asDriverOnErrorJustComplete()
+            }
+        
+        return Output(pokemonCellsViewModel: pokemonDetailCellViewModels,
+                      selectedPokemon: selectedPokemon)
     }
 }
